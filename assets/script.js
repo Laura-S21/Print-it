@@ -21,31 +21,40 @@ const slides = [
 const rightArrow = document.querySelector(".arrow_right");
 const leftArrow = document.querySelector(".arrow_left");
 
+//Variable avec la position initiale
+let position = 0;
+
 //J'écoute les événements sur la flèche de droite
 rightArrow.addEventListener("click", function() {
-	alert("it works !");
+	//alert("it works !");
+
+	//Au clic, j'ajoute 1 à ma position initiale
+	position = position + 1;
+
+	//J'appelle la fonction qui met à jour les points
+	updateDots();
 });
 
 //J'écoute les événements sur la flèche de gauche
 leftArrow.addEventListener("click", function() {
-	
-	alert("it works !");
+	//alert("it works !");
 });
 
 // Fonction pour créer les points
 function generateDots() {
-// Je boucle sur le tableau des slides pour avoir le même nbr de points que d'éléments
+	// Récupération de l'élément qui affiche tous les points
+	const allDots = document.querySelector(".dots");
+
+	// Je boucle sur le tableau des slides pour avoir le même nbr de points que d'éléments
 	for (let i = 0; i < slides.length; i++) {
-		// Récupération de l'élément qui affiche tous les points
-		const allDots = document.querySelector(".dots");
 		// Création d'une balise pour un point
 		const dotElement = document.createElement("div");
 		dotElement.className = "dot";
 
 		//Pour passer le 1er point en mode "actif" = si je suis à l'index 0
-		if (i == 0) {
+		if (i == position) {
 			//J'ajoute à l'élément dot la classe dot_selected
-			dotElement.classList.add ("dot_selected");
+			dotElement.classList.add("dot_selected");
 		}
 
 		// Je rattache l'élément créé (le point) à l'élément parent
@@ -53,14 +62,29 @@ function generateDots() {
 	}
 }
 
+// Fonction pour mettre à jour le point sur la slide active
+function updateDots() {
+	// Récupération de l'élément qui affiche tous les points
+	const allDots = document.querySelector(".dots");
+	// Déclaration de ma position actuelle
+	let currentPosition = 0;
+	//Boucle pour parcourir tous les éléments enfants de la div qui contient tous les points
+	for (const dot of allDots.children) {
+		//Si ma position actuelle est égale à ma poistion initiale - 1
+		if (currentPosition == position - 1) {
+			//J'enlève la classe dot_selected à l'élément dot
+			dot.classList.remove("dot_selected");
+		}
+		//Si ma position actuelle est égale à ma poistion initiale
+		if (currentPosition == position) {
+			//J'ajoute à l'élément dot la classe dot_selected
+			dot.classList.add("dot_selected");
+		}
+
+		
+		currentPosition++;
+	}
+}
+
 // J'appelle la fonction pour générer les points
 generateDots();
-
-
-const allSlides = slides[i];
-//Création d'une balise pour l'image
-const imageElement = document.createElement("img");
-imageElement.src = slides.image;
-//Création d'une balise pour le texte
-const textElement = document.createElement("p");
-textElement.innerText = slides.tagLine;
