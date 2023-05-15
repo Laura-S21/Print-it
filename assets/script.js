@@ -26,18 +26,50 @@ let position = 0;
 
 //J'écoute les événements sur la flèche de droite
 rightArrow.addEventListener("click", function() {
-	//alert("it works !");
 
 	//Au clic, j'ajoute 1 à ma position initiale
 	position = position + 1;
 
+	if (position > slides.length - 1) {
+		position = 0;
+	}
+
+	/*Je récupère LES éléments qui ont la classe "banner-img", je sélcetionne l'index 0 dans le tableau qu'il me renvoie,
+	je modifie le src avec le début du chemin des images et la clé "image" à l'index correspondant à ma position*/
+	document.getElementsByClassName("banner-img")[0].src ="./assets/images/slideshow/" + slides[position].image;
+	
+	/*Je récupère LES éléments "p" sous la balise avec l'ID "banner", je sélcetionne l'index 0 dans le tableau qu'il me renvoie,
+	je modifie le HTML avec la clé "tagLine" à l'index correspondant à ma position*/
+	document.getElementById("banner").getElementsByTagName("p")[0].innerHTML = slides[position].tagLine;
+
 	//J'appelle la fonction qui met à jour les points
-	updateDots();
+	updateDots()
+
+	
 });
 
 //J'écoute les événements sur la flèche de gauche
 leftArrow.addEventListener("click", function() {
-	//alert("it works !");
+
+	//Au clic, j'ajoute 1 à ma position initiale
+	position = position - 1;
+
+	if (position < 0) {
+		position = slides.length - 1;
+	}
+
+	/*Je récupère LES éléments qui ont la classe "banner-img", je sélectionne l'index 0 dans le tableau qu'il me renvoie,
+	je modifie le src avec le début du chemin des images et la clé "image" à l'index correspondant à ma position*/
+	document.getElementsByClassName("banner-img")[0].src ="./assets/images/slideshow/" + slides[position].image;
+
+	/*Je récupère LES éléments "p" sous la balise avec l'ID "banner", je sélcetionne l'index 0 dans le tableau qu'il me renvoie,
+	je modifie le HTML avec la clé "tagLine" à l'index correspondant à ma position*/
+	document.getElementById("banner").getElementsByTagName("p")[0].innerHTML = slides[position].tagLine;
+
+	//J'appelle la fonction qui met à jour les points
+	updateDots()
+
+
 });
 
 // Fonction pour créer les points
@@ -62,29 +94,28 @@ function generateDots() {
 	}
 }
 
-// Fonction pour mettre à jour le point sur la slide active
+// Fonction pour mettre à jour les bullet points
 function updateDots() {
-	// Récupération de l'élément qui affiche tous les points
-	const allDots = document.querySelector(".dots");
-	// Déclaration de ma position actuelle
-	let currentPosition = 0;
-	//Boucle pour parcourir tous les éléments enfants de la div qui contient tous les points
-	for (const dot of allDots.children) {
-		//Si ma position actuelle est égale à ma poistion initiale - 1
-		if (currentPosition == position - 1) {
-			//J'enlève la classe dot_selected à l'élément dot
-			dot.classList.remove("dot_selected");
-		}
-		//Si ma position actuelle est égale à ma poistion initiale
-		if (currentPosition == position) {
-			//J'ajoute à l'élément dot la classe dot_selected
-			dot.classList.add("dot_selected");
-		}
 
-		
-		currentPosition++;
+	// Je déclare la variable dots (tableau) en récupérant la liste des élément avec la classe "dot"
+	const dots = document.getElementsByClassName("dot");
+
+	// Je boucle sur le tableau "dots" créé à la ligne précédente
+	for (let i = 0; i < dots.length; i++) {
+
+		//Si l'index est égal à ma position ...
+		if (i == position) {
+
+			// ... j'ajoute la classe "dot_selected" à l'élément de l'index où je me trouve.
+			dots[i].classList.add("dot_selected");
+		// Sinon ...	
+		} else {
+			// ... j'enlève la classe "dot_selected" à l'élément de l'index où je me trouve.
+			dots[i].classList.remove("dot_selected");
+		}
 	}
 }
+
 
 // J'appelle la fonction pour générer les points
 generateDots();
